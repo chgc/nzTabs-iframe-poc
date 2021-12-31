@@ -1,15 +1,15 @@
 <nz-tabset style="margin-left: -1px;" [nzAnimated]="true" [nzSelectedIndex]="currentIndex"
   (nzSelectChange)="nzSelectChange($event)" [nzType]="'card'">
-  <nz-tab *ngFor="let menu of menuList" [nzTitle]="nzTabHeading">
+  <nz-tab *ngFor="let menu of menuList" [nzTitle]="nzTabHeading" [nzForceRender]="menu.externalUrl">
     <ng-template #nzTabHeading>
       <div>
         {{menu.title}}
-        <i *ngIf="menu.isExternal" (click)="closeUrl(menu.url)" class="anticon anticon-cross">x</i>
+        <i *ngIf="menu.isBlank" (click)="closeUrl(menu.url)" class="anticon anticon-cross">x</i>
       </div>
     </ng-template>
+    <app-iframe [src]="menu.externalUrl" *ngIf="menu.externalUrl"></app-iframe>
   </nz-tab>
 </nz-tabset>
 <div class="tab-content">
-  <!--路由的内容会被显示在这里-->
   <ng-content></ng-content>
 </div>

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BlankComponent } from './layout/blank/blank.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,7 @@ const routes: Routes = [
       import('./page2/page2.module').then((m) => m.Page2Module),
     data: {
       title: 'Page2',
-      isExternal: true,
+      isBlank: true,
     },
   },
   {
@@ -25,7 +26,15 @@ const routes: Routes = [
       import('./page3/page3.module').then((m) => m.Page3Module),
     data: {
       title: 'Page3',
-      isExternal: true,
+    },
+  },
+  {
+    path: 'blog',
+    component: BlankComponent,
+    data: {
+      title: 'Blog',
+      externalUrl: 'https://blog.kevinyang.net/',
+      isBlank: true,
     },
   },
   { path: '**', redirectTo: '/page1' },

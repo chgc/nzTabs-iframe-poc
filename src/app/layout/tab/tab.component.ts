@@ -11,8 +11,8 @@ import { filter, map, mergeMap } from 'rxjs';
 })
 export class TabComponent {
   menuList: any[] = [{ title: 'Home', url: '' }];
-
   currentIndex = -1;
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -31,37 +31,34 @@ export class TabComponent {
         filter((route) => route.outlet === 'primary'),
         mergeMap((route) => route.data)
       )
-
       .subscribe((event: any) => {
-        const menu = { ...event };
+        const menu = {
+          ...event,
+          isBlank: event.isBlank || !!event.externalUrl,
+        };
         menu.url = this.router.url;
-        const url = menu.url;
+
         this.titleService.setTitle(menu.title);
-        if (menu.isExternal) {
-          const exitMenu = this.menuList.find(
-            (info, idx) => idx > 0 && info.url === url
-          );
-          if (!exitMenu) {
-            this.menuList.push(menu);
+        let index = this.findPageIndex(menu.url);
+
+        if (menu.isBlank) {
+          if (index === -1) {
+            index = this.menuList.push(menu) - 1;
           }
         } else {
-          this.menuList[0] = { ...menu, title: 'Home' };
+          this.menuList[0] = menu;
         }
-        this.currentIndex = this.menuList.findIndex((p) => p.url === url);
-        console.log(this.currentIndex);
+        this.currentIndex = index;
       });
   }
 
   closeUrl(url: string) {
-    const index = this.menuList.findIndex((p) => p.url === url);
+    const index = this.findPageIndex(url);
 
     if (this.menuList.length === 1) {
       return;
     }
     this.menuList.splice(index, 1);
-
-    // 删除复用
-    // SimpleReuseStrategy.deleteRouteSnapshot(url);
 
     if (this.currentIndex === index) {
       let menu = this.menuList[index - 1];
@@ -70,6 +67,10 @@ export class TabComponent {
       }
       this.router.navigate([menu.url]);
     }
+  }
+
+  findPageIndex(url: string) {
+    return this.menuList.findIndex((p) => p.url === url);
   }
 
   nzSelectChange($event: NzTabChangeEvent) {
