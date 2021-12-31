@@ -13,18 +13,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { TabComponent } from './layout/tab/tab.component';
+
+const NzModules = [NzTabsModule, NzMenuModule];
 
 registerLocaleData(en);
 
 @NgModule({
-  declarations: [AppComponent, SidebarComponent, HeaderComponent],
+  declarations: [AppComponent, SidebarComponent, HeaderComponent, TabComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NzMenuModule,
+    ...NzModules,
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent],
