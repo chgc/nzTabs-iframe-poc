@@ -8,7 +8,6 @@ const routes: Routes = [
       import('./page1/page1.module').then((m) => m.Page1Module),
     data: {
       title: 'Page1',
-      isRemove: true,
     },
   },
   {
@@ -17,7 +16,7 @@ const routes: Routes = [
       import('./page2/page2.module').then((m) => m.Page2Module),
     data: {
       title: 'Page2',
-      isRemove: true,
+      isExternal: true,
     },
   },
   {
@@ -26,9 +25,10 @@ const routes: Routes = [
       import('./page3/page3.module').then((m) => m.Page3Module),
     data: {
       title: 'Page3',
-      isRemove: true,
+      isExternal: true,
     },
   },
+  { path: '**', redirectTo: '/page1' },
 ];
 
 @NgModule({
